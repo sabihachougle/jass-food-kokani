@@ -42,13 +42,13 @@ git push -u origin main
 
 3. **Configure Build Settings**
    - Build command: `npm run build`
-   - Publish directory: `dist`
+   - Publish directory: `client/dist`
    - Click "Deploy site"
 
 #### Option B: Manual Deploy (Drag & Drop)
 1. Run `npm run build` locally
 2. Go to https://app.netlify.com
-3. Drag the `dist` folder onto Netlify
+3. Drag the `client/dist` folder onto Netlify
 4. Your site goes live instantly!
 
 ### Step 3: Deploy Backend to Netlify Functions (or Railway/Render)
@@ -75,7 +75,7 @@ cp server/routes/* netlify/functions/
 ```toml
 [build]
   command = "npm run build"
-  publish = "dist"
+  publish = "client/dist"
   functions = "netlify/functions"
 
 [functions]
@@ -400,7 +400,7 @@ router.post('/test-email', async (req, res) => {
 - [ ] Push code to GitHub
 - [ ] Connect repo to Netlify
 - [ ] Build command: `npm run build`
-- [ ] Publish directory: `dist`
+- [ ] Publish directory: `client/dist`
 - [ ] Custom domain (optional)
 
 ### Backend (Railway/Render)
