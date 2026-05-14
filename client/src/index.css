@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: radial-gradient(circle at top left, rgba(13, 115, 119, 0.08), transparent 25%),
+    radial-gradient(circle at bottom right, rgba(216, 77, 66, 0.06), transparent 30%),
+    linear-gradient(180deg, #f8fafb 0%, #eef7f8 100%);
+  color: #1a2e2e;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+input,
+button,
+textarea,
+select {
+  font-family: 'Inter', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Playfair Display', serif;
+}
+
+::selection {
+  background: rgba(13, 115, 119, 0.18);
+  color: #1a2e2e;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary via-primary-light to-primary-dark px-6 py-3 text-sm font-semibold text-white shadow-glow transition duration-300 ease-out hover:from-primary-dark hover:via-primary hover:to-primary-light;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-primary bg-white/95 px-6 py-3 text-sm font-semibold text-primary shadow-sm transition duration-300 ease-out hover:border-accent hover:text-accent hover:bg-mint-light;
+}
+
+.section-glow {
+  @apply rounded-[2rem] border border-mint bg-white/90 p-8 shadow-glow;
+}
+
+.card-soft {
+  @apply rounded-[2rem] border border-mint bg-mint-light p-8 shadow-sm;
+}
+
+.gradient-slate {
+  background: linear-gradient(135deg, rgba(13, 115, 119, 0.10), rgba(216, 77, 66, 0.08));
+}
+
+@keyframes toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toast-animation {
+  animation: toast-slide-in 0.3s ease-out;
+}
+
+.section-glow {
+  @apply rounded-[2rem] border border-mint bg-white/90 p-8 shadow-glow;
+}
+
+.card-soft {
+  @apply rounded-[2rem] border border-mint bg-mint-light p-8 shadow-sm;
+}
+
+.gradient-slate {
+  background: linear-gradient(135deg, rgba(13, 115, 119, 0.10), rgba(216, 77, 66, 0.08));
+}
