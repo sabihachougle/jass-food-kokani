@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import products from '../data/products';
 import homeContent from '../content/home.json';
 
@@ -27,6 +28,7 @@ function useRuntimeConfig() {
 
 function CarouselSection({ title, items = [], link }) {
   const containerRef = useRef(null);
+  const { addItem, showNotification } = useCart();
 
   const scrollByCard = (direction = 1) => {
     const container = containerRef.current;
@@ -38,18 +40,23 @@ function CarouselSection({ title, items = [], link }) {
     container.scrollBy({ left: cardWidth * direction, behavior: 'smooth' });
   };
 
+  const handleAddToCart = (product) => {
+    addItem(product, 1);
+    showNotification(`${product.name} added to cart!`);
+  };
+
   return (
-    <section className="card-soft p-2.5 sm:p-3 md:p-4 lg:p-6">
+    <section className="card-soft min-w-0 p-2.5 sm:p-3 md:p-4 lg:p-6">
       <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4">
         <h3 className="text-sm sm:text-lg md:text-xl font-semibold text-text-dark">{title}</h3>
         <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 flex-wrap">
           <button type="button" onClick={() => scrollByCard(-1)} aria-label="Scroll left" className="btn-secondary text-xs sm:text-sm px-2 sm:px-2.5 py-1 sm:py-1.5">←</button>
           <button type="button" onClick={() => scrollByCard(1)} aria-label="Scroll right" className="btn-secondary text-xs sm:text-sm px-2 sm:px-2.5 py-1 sm:py-1.5">→</button>
-          {link && <Link to={link} className="ml-1 sm:ml-2 md:ml-3 text-xs sm:text-sm text-primary font-semibold hover:text-primary-dark transition whitespace-nowrap">View all →</Link>}
+          {link && <Link to={link} className="ml-1 sm:ml-2 md:ml-3 text-xs sm:text-sm text-primary font-semibold hover:text-primary-dark transition">View all →</Link>}
         </div>
       </div>
 
-      <div ref={containerRef} className="flex gap-2 sm:gap-3 md:gap-4 overflow-x-auto py-2 scrollbar-hide px-0 sm:px-0 md:px-0 w-full">
+      <div ref={containerRef} className="flex min-w-0 gap-2 sm:gap-3 md:gap-4 overflow-x-auto py-2 scrollbar-hide px-0 sm:px-0 md:px-0 w-full">
         {items.map((it, idx) => (
           <div key={idx} className="carousel-card min-w-[150px] sm:min-w-[160px] md:min-w-[180px] lg:min-w-[220px] max-w-[150px] sm:max-w-[160px] md:max-w-[180px] lg:max-w-[220px] rounded-lg sm:rounded-xl border border-mint bg-white shadow-sm hover:shadow-md transition overflow-hidden flex-shrink-0">
             <img src={it.image} alt={it.name} className="h-28 sm:h-32 md:h-36 w-full object-cover" />
@@ -62,6 +69,15 @@ function CarouselSection({ title, items = [], link }) {
                 </div>
               </div>
               {it.description && <p className="mt-1 text-xs text-text-light line-clamp-1">{it.description}</p>}
+              <div className="mt-3">
+                <button
+                  type="button"
+                  onClick={() => handleAddToCart(it)}
+                  className="btn-primary w-full text-xs sm:text-sm px-3 py-2"
+                >
+                  Add to Cart
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -83,9 +99,9 @@ export default function Home() {
   const hero = homeContent?.hero || {};
 
   return (
-    <section className="grid gap-6 sm:gap-8 md:gap-12 lg:gap-16 py-4 sm:py-6 md:py-10 lg:py-16 w-full">
-      <div className="grid gap-4 sm:gap-6 md:gap-8 rounded-lg sm:rounded-2xl md:rounded-[2rem] border border-mint bg-white/95 px-3 sm:px-4 md:px-6 lg:px-10 py-4 sm:py-6 md:py-8 lg:py-10 shadow-glow md:grid-cols-[1.2fr_1fr] md:items-center">
-        <div className="max-w-2xl order-2 md:order-1">
+    <section className="grid min-w-0 gap-6 sm:gap-8 md:gap-12 lg:gap-16 py-4 sm:py-6 md:py-10 lg:py-16 w-full">
+      <div className="grid min-w-0 gap-4 sm:gap-6 md:gap-8 rounded-lg sm:rounded-2xl md:rounded-[2rem] border border-mint bg-white/95 px-3 sm:px-4 md:px-6 lg:px-10 py-4 sm:py-6 md:py-8 lg:py-10 shadow-glow md:grid-cols-[1.2fr_1fr] md:items-center">
+        <div className="max-w-2xl min-w-0 order-2 md:order-1">
           <p className="text-xs sm:text-sm uppercase tracking-[0.35em] text-accent font-semibold">{hero.eyebrow || 'Homemade Mithaas'}</p>
           <p className="text-xs sm:text-sm uppercase tracking-[0.35em] text-text-light mt-1">{hero.subeyebrow || 'Authentic Kokani Taste'}</p>
           <h1 className="mt-3 sm:mt-4 text-2xl sm:text-4xl md:text-5xl font-semibold leading-tight text-text-dark">{hero.heading || 'Authentic Kokani Sweets, Made with Love'}</h1>
@@ -100,7 +116,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="rounded-lg sm:rounded-2xl md:rounded-[2rem] bg-gradient-to-br from-accent/10 via-mint-light to-white p-4 sm:p-6 md:p-8 text-center shadow-inner shadow-glow/30 order-1 md:order-2">
+        <div className="min-w-0 rounded-lg sm:rounded-2xl md:rounded-[2rem] bg-gradient-to-br from-accent/10 via-mint-light to-white p-4 sm:p-6 md:p-8 text-center shadow-inner shadow-glow/30 order-1 md:order-2">
           <p className="text-xs sm:text-sm uppercase tracking-[0.35em] text-text-light font-medium">🏠 Home-based sweets</p>
           <div className="mt-4 sm:mt-6 space-y-2 sm:space-y-3 text-left text-xs sm:text-sm text-text-light leading-relaxed">
             <p className="flex items-start gap-2"><span className="text-accent text-lg flex-shrink-0">✓</span> <span>Handmade Kokani sweets prepared in small batches</span></p>
