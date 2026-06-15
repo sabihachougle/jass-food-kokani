@@ -1,8 +1,29 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import products from '../data/products';
 import homeContent from '../content/home.json';
-import { API_BASE, CONTACT_RECIPIENT, CONTACT_CC } from '../env.js';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+const CONTACT_RECIPIENT_FALLBACK = '';
+const CONTACT_CC_FALLBACK = '';
+
+function useRuntimeConfig() {
+  const [config, setConfig] = useState({ contactRecipient: CONTACT_RECIPIENT_FALLBACK, contactCc: CONTACT_CC_FALLBACK });
+
+  useEffect(() => {
+    let mounted = true;
+    fetch(`${API_BASE}/api/config`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (!mounted || !data) return;
+        setConfig({ contactRecipient: data.contactRecipient || CONTACT_RECIPIENT_FALLBACK, contactCc: data.contactCc || CONTACT_CC_FALLBACK });
+      })
+      .catch(() => { });
+    return () => { mounted = false; };
+  }, []);
+
+  return config;
+}
 
 function CarouselSection({ title, items = [], link }) {
   const containerRef = useRef(null);
@@ -54,6 +75,7 @@ export default function Home() {
     .map((id) => products.find((p) => p.id === id))
     .filter(Boolean);
 
+  const { contactRecipient, contactCc } = useRuntimeConfig();
   const hero = homeContent?.hero || {};
 
   return (

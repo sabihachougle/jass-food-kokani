@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import orderRouter from './routes/orderRoutes.js';
 import contactRouter from './routes/contactRoutes.js';
+import configRouter from './routes/configRoutes.js';
 
 
 dotenv.config();
@@ -14,6 +15,7 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 app.use('/api/order', orderRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/config', configRouter);
 
 app.get('/', (req, res) => {
   res.send({ status: 'running', service: 'Jass Food and Kokani Delicacies API' });

@@ -10,13 +10,14 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ message: 'Name, email, and message are required.' });
     }
 
-    const ownerEmail = process.env.OWNER_EMAIL || process.env.SMTP_USER;
+    const ownerEmail = process.env.CONTACT_RECIPIENT || process.env.OWNER_EMAIL || process.env.SMTP_USER;
     const ownerSubject = subject?.trim() || `New contact request from ${name}`;
     const userSubject = `We received your query at Jass Food`;
 
     try {
         await sendContactEmail({
             to: ownerEmail,
+            cc: process.env.CONTACT_CC,
             subject: ownerSubject,
             name,
             email,

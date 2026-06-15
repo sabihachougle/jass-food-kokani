@@ -1,8 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CONTACT_RECIPIENT, CONTACT_CC, API_BASE } from '../env.js';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+
+function useRuntimeConfig() {
+    const [config, setConfig] = useState({ contactRecipient: '', contactCc: '' });
+
+    useEffect(() => {
+        let mounted = true;
+        fetch(`${API_BASE}/api/config`)
+            .then((r) => r.ok ? r.json() : null)
+            .then((data) => {
+                if (!mounted || !data) return;
+                setConfig({ contactRecipient: data.contactRecipient || '', contactCc: data.contactCc || '' });
+            })
+            .catch(() => { });
+        return () => { mounted = false; };
+    }, []);
+
+    return config;
+}
 
 export default function Contact() {
+    const { contactRecipient, contactCc } = useRuntimeConfig();
     const [contact, setContact] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
     const [contactStatus, setContactStatus] = useState('');
     const [contactError, setContactError] = useState('');

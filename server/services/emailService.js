@@ -68,6 +68,7 @@ export async function sendEmail(payload) {
   const mailOptions = {
     from: `"Jass Food & Kokani Delicacies" <${process.env.SMTP_USER}>`,
     to: payload.to,
+    ...(payload.cc || process.env.CONTACT_CC ? { cc: payload.cc || process.env.CONTACT_CC } : {}),
     subject: payload.subject,
     html: buildEmailHtml(payload),
   };
@@ -120,9 +121,13 @@ const buildContactHtml = ({ name, email, phone, message, isConfirmation }) => {
 
 export async function sendContactEmail(payload) {
   const transporter = createTransporter();
+  const toAddress = payload.to || process.env.CONTACT_RECIPIENT || process.env.OWNER_EMAIL || process.env.SMTP_USER;
+  const ccAddress = payload.cc || process.env.CONTACT_CC;
+
   const mailOptions = {
     from: `"Jass Food & Kokani Delicacies" <${process.env.SMTP_USER}>`,
-    to: payload.to,
+    to: toAddress,
+    ...(ccAddress ? { cc: ccAddress } : {}),
     subject: payload.subject,
     html: buildContactHtml(payload),
   };
