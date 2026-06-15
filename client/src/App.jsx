@@ -13,11 +13,11 @@ import Contact from './pages/Contact';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-mint-light via-white to-mint bg-fixed text-text-dark">
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-mint-light via-white to-mint bg-fixed text-text-dark">
       <Navbar />
       <CartDrawer />
       <Notification />
-      <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-7xl px-2.5 sm:px-4 md:px-6 pb-8 sm:pb-12 md:pb-16 lg:px-8 box-border">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/jass-food" element={<JassFood />} />

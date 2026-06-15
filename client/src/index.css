@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 :root {
   color-scheme: light;
 }
@@ -40,20 +45,50 @@ h6 {
   color: #1a2e2e;
 }
 
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(13, 115, 119, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(13, 115, 119, 0.5);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Button Styles */
 .btn-primary {
-  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary via-primary-light to-primary-dark px-6 py-3 text-sm font-semibold text-white shadow-glow transition duration-300 ease-out hover:from-primary-dark hover:via-primary hover:to-primary-light;
+  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary via-primary-light to-primary-dark px-6 py-3 text-sm font-semibold text-white shadow-glow transition duration-300 ease-out hover:from-primary-dark hover:via-primary hover:to-primary-light hover:shadow-lg active:scale-95;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center rounded-full border border-primary bg-white/95 px-6 py-3 text-sm font-semibold text-primary shadow-sm transition duration-300 ease-out hover:border-accent hover:text-accent hover:bg-mint-light;
+  @apply inline-flex items-center justify-center rounded-full border border-primary bg-white/95 px-6 py-3 text-sm font-semibold text-primary shadow-sm transition duration-300 ease-out hover:border-accent hover:text-accent hover:bg-mint-light hover:shadow-md active:scale-95;
 }
 
+/* Section Styles */
 .section-glow {
-  @apply rounded-[2rem] border border-mint bg-white/90 p-8 shadow-glow;
+  @apply rounded-[2rem] border border-mint bg-white/90 shadow-glow;
 }
 
 .card-soft {
-  @apply rounded-[2rem] border border-mint bg-mint-light p-8 shadow-sm;
+  @apply rounded-[2rem] border border-mint bg-mint-light shadow-sm;
 }
 
 .gradient-slate {
@@ -72,18 +107,78 @@ h6 {
   }
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-top {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .toast-animation {
   animation: toast-slide-in 0.3s ease-out;
 }
 
-.section-glow {
-  @apply rounded-[2rem] border border-mint bg-white/90 p-8 shadow-glow;
+.animate-in {
+  animation: fade-in 0.2s ease-out;
 }
 
-.card-soft {
-  @apply rounded-[2rem] border border-mint bg-mint-light p-8 shadow-sm;
+.fade-in {
+  animation: fade-in 0.2s ease-out;
 }
 
-.gradient-slate {
-  background: linear-gradient(135deg, rgba(13, 115, 119, 0.10), rgba(216, 77, 66, 0.08));
+.slide-in-from-top-2 {
+  animation: slide-in-from-top 0.3s ease-out;
+}
+
+/* Line clamping for text overflow */
+.line-clamp-1 {
+  @apply overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth focus transitions */
+input:focus,
+textarea:focus,
+button:focus,
+select:focus {
+  @apply transition-all duration-200;
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 640px) {
+
+  button,
+  a,
+  input,
+  textarea {
+    @apply min-h-[44px];
+  }
 }
