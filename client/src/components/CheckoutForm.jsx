@@ -18,22 +18,80 @@ export default function CheckoutForm() {
     landmark: '',
     notes: '',
   });
+  const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const validateField = (name, value) => {
+    const trimmed = value.trim();
+    switch (name) {
+      case 'name':
+        return trimmed ? '' : 'Full name is required.';
+      case 'email':
+        if (!trimmed) return 'Email address is required.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return 'Enter a valid email address.';
+        return '';
+      case 'phone':
+        if (!trimmed) return 'Mobile number is required.';
+        if (!/^[0-9]{10}$/.test(trimmed)) return 'Enter a valid 10-digit mobile number.';
+        return '';
+      case 'addressLine1':
+        return trimmed ? '' : 'Address line 1 is required.';
+      case 'city':
+        return trimmed ? '' : 'City is required.';
+      case 'pincode':
+        if (!trimmed) return 'Pincode is required.';
+        if (!/^[0-9]{6}$/.test(trimmed)) return 'Enter a valid 6-digit pincode.';
+        return '';
+      default:
+        return '';
+    }
+  };
+
+  const validateAllFields = (values) => {
+    const nextErrors = {};
+    ['name', 'email', 'phone', 'addressLine1', 'city', 'pincode'].forEach((field) => {
+      const message = validateField(field, values[field] || '');
+      if (message) nextErrors[field] = message;
+    });
+    return nextErrors;
+  };
+
+  const getFieldClassName = (name, defaultBg = 'bg-mint-light') =>
+    `w-full rounded-3xl border px-4 py-3 text-sm text-text-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 ${defaultBg} ${fieldErrors[name] ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : 'border-mint'}`;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
+    setFieldErrors((current) => {
+      const nextError = validateField(name, value);
+      if (!nextError) {
+        const { [name]: removed, ...rest } = current;
+        return rest;
+      }
+      return { ...current, [name]: nextError };
+    });
+  };
+
+  const handleBlur = (event) => {
+    const { name, value } = event.target;
+    setFieldErrors((current) => ({
+      ...current,
+      [name]: validateField(name, value),
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!form.name || !form.email || !form.addressLine1 || !form.city || !form.pincode) {
-      setError('Please complete the required details before placing the order.');
-      return;
-    }
     if (items.length === 0) {
       setError('Your cart is empty. Add sweets before checkout.');
+      return;
+    }
+
+    const nextErrors = validateAllFields(form);
+    if (Object.keys(nextErrors).length > 0) {
+      setFieldErrors(nextErrors);
+      setError('Please fix the highlighted fields before placing the order.');
       return;
     }
 
@@ -125,68 +183,93 @@ export default function CheckoutForm() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <label className="space-y-2 text-sm font-medium text-text-light">
-          Full Name*
+          Full Name
           <input
             value={form.name}
             onChange={handleChange}
+            onBlur={handleBlur}
             name="name"
             required
-            className="w-full rounded-3xl border border-mint bg-mint-light px-4 py-3 text-sm text-text-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            aria-invalid={fieldErrors.name ? 'true' : 'false'}
+            aria-describedby={fieldErrors.name ? 'name-error' : undefined}
+            className={getFieldClassName('name')}
           />
+          {fieldErrors.name && <p id="name-error" className="text-xs text-red-500">{fieldErrors.name}</p>}
         </label>
         <label className="space-y-2 text-sm font-medium text-text-light">
           Mobile Number
           <input
             value={form.phone}
             onChange={handleChange}
+            onBlur={handleBlur}
             name="phone"
             type="tel"
-            className="w-full rounded-3xl border border-mint bg-mint-light px-4 py-3 text-sm text-text-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            required
+            aria-invalid={fieldErrors.phone ? 'true' : 'false'}
+            aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
+            className={getFieldClassName('phone')}
           />
+          {fieldErrors.phone && <p id="phone-error" className="text-xs text-red-500">{fieldErrors.phone}</p>}
         </label>
         <label className="space-y-2 text-sm font-medium text-text-light">
-          Email Address*
+          Email Address
           <input
             value={form.email}
             onChange={handleChange}
+            onBlur={handleBlur}
             name="email"
             type="email"
             required
-            className="w-full rounded-3xl border border-mint bg-mint-light px-4 py-3 text-sm text-text-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            aria-invalid={fieldErrors.email ? 'true' : 'false'}
+            aria-describedby={fieldErrors.email ? 'email-error' : undefined}
+            className={getFieldClassName('email')}
           />
+          {fieldErrors.email && <p id="email-error" className="text-xs text-red-500">{fieldErrors.email}</p>}
         </label>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <label className="space-y-2 text-sm font-medium text-text-light">
-          Address Line 1*
+          Address Line 1
           <input
             value={form.addressLine1}
             onChange={handleChange}
+            onBlur={handleBlur}
             name="addressLine1"
             required
-            className="w-full rounded-3xl border border-mint bg-white px-4 py-3 text-sm text-text-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            aria-invalid={fieldErrors.addressLine1 ? 'true' : 'false'}
+            aria-describedby={fieldErrors.addressLine1 ? 'addressLine1-error' : undefined}
+            className={getFieldClassName('addressLine1', 'bg-white')}
           />
+          {fieldErrors.addressLine1 && <p id="addressLine1-error" className="text-xs text-red-500">{fieldErrors.addressLine1}</p>}
         </label>
         <label className="space-y-2 text-sm font-medium text-text-light">
-          City*
+          City
           <input
             value={form.city}
             onChange={handleChange}
+            onBlur={handleBlur}
             name="city"
             required
-            className="w-full rounded-3xl border border-mint bg-white px-4 py-3 text-sm text-text-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            aria-invalid={fieldErrors.city ? 'true' : 'false'}
+            aria-describedby={fieldErrors.city ? 'city-error' : undefined}
+            className={getFieldClassName('city', 'bg-white')}
           />
+          {fieldErrors.city && <p id="city-error" className="text-xs text-red-500">{fieldErrors.city}</p>}
         </label>
         <label className="space-y-2 text-sm font-medium text-text-light">
-          Pincode*
+          Pincode
           <input
             value={form.pincode}
             onChange={handleChange}
+            onBlur={handleBlur}
             name="pincode"
             required
-            className="w-full rounded-3xl border border-mint bg-white px-4 py-3 text-sm text-text-dark outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            aria-invalid={fieldErrors.pincode ? 'true' : 'false'}
+            aria-describedby={fieldErrors.pincode ? 'pincode-error' : undefined}
+            className={getFieldClassName('pincode', 'bg-white')}
           />
+          {fieldErrors.pincode && <p id="pincode-error" className="text-xs text-red-500">{fieldErrors.pincode}</p>}
         </label>
         <label className="space-y-2 text-sm font-medium text-text-light">
           Landmark

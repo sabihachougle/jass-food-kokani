@@ -69,7 +69,7 @@ Edit `.env` with your configuration:
 PORT=4000
 
 # Owner's WhatsApp number (already filled)
-OWNER_WHATSAPP_NUMBER=919833987609
+OWNER_WHATSAPP_NUMBER=1111111
 
 # Gmail SMTP settings (for email receipts)
 SMTP_HOST=smtp.gmail.com
