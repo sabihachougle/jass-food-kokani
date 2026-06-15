@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
-const CONTACT_RECIPIENT = 'orders@jassfood.com';
-const CONTACT_CC = 'sabiha53chougle@gmail.com';
+import { CONTACT_RECIPIENT, CONTACT_CC, API_BASE } from '../env.js';
 
 export default function Contact() {
     const [contact, setContact] = useState({ name: '', email: '', phone: '', subject: '', message: '' });

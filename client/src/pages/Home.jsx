@@ -2,10 +2,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import products from '../data/products';
 import homeContent from '../content/home.json';
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
-const CONTACT_RECIPIENT = 'orders@jassfood.com';
-const CONTACT_CC = 'sabiha53chougle@gmail.com';
+import { API_BASE, CONTACT_RECIPIENT, CONTACT_CC } from '../env.js';
 
 function CarouselSection({ title, items = [], link }) {
   const containerRef = useRef(null);
