@@ -19,7 +19,10 @@ export default function ProductCard({ product }) {
       <div className="p-3">
         <div className="flex items-start justify-between gap-2">
           <h3 className="text-base font-semibold text-text-dark">{product.name}</h3>
-          <span className="whitespace-nowrap text-xs font-semibold text-accent">₹{product.price}</span>
+          <div className="flex flex-col items-end gap-0.5">
+            <span className="whitespace-nowrap text-xs font-semibold text-accent">₹{product.price}</span>
+            <span className="text-xs text-text-light">{product.unit}</span>
+          </div>
         </div>
         <p className="mt-1 text-xs leading-5 text-text-light">{product.description}</p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

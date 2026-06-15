@@ -28,7 +28,7 @@ export default function CartDrawer() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h3 className="text-lg font-semibold text-text-dark">{item.name}</h3>
-                    <p className="mt-1 text-sm text-text-light">₹{item.price} each</p>
+                    <p className="mt-1 text-sm text-text-light">₹{item.price} {item.unit}</p>
                   </div>
                   <button onClick={() => removeItem(item.id)} className="text-sm text-text-light transition hover:text-accent">Remove</button>
                 </div>

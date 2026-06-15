@@ -53,9 +53,12 @@ function CarouselSection({ title, items = [], link }) {
           <div key={idx} className="carousel-card min-w-[220px] max-w-[220px] rounded-xl border border-mint bg-white shadow-sm">
             <img src={it.image} alt={it.name} className="h-36 w-full object-cover rounded-t-xl" />
             <div className="p-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-start justify-between gap-2">
                 <h4 className="text-sm font-semibold text-text-dark">{it.name}</h4>
-                <span className="text-xs text-text-light">₹{it.price || ''}</span>
+                <div className="flex flex-col items-end gap-0.5">
+                  <span className="text-xs text-text-light">₹{it.price || ''}</span>
+                  <span className="text-xs text-text-light">{it.unit}</span>
+                </div>
               </div>
               {it.description && <p className="mt-1 text-xs text-text-light">{it.description}</p>}
             </div>
