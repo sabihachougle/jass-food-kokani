@@ -65,8 +65,8 @@ export default function Contact() {
                     <p className="text-sm leading-7 text-text-light">Home-based Kokani sweets business accepting orders online. Fresh, handmade, and lovingly prepared.</p>
                     <div className="rounded-[1.75rem] border border-mint bg-white/80 p-6 text-sm text-text-light shadow-sm">
                         <p className="font-semibold text-text-dark">Contact emails</p>
-                        <p className="mt-3"><strong>Primary:</strong> {CONTACT_RECIPIENT}</p>
-                        <p><strong>Alternate:</strong> {CONTACT_CC}</p>
+                        <p className="mt-3"><strong>Primary:</strong> {contactRecipient}</p>
+                        <p><strong>Alternate:</strong> {contactCc}</p>
                     </div>
                     <p className="text-sm text-text-light">Use the form to tell us who is trying to contact and what you need help with.</p>
                 </div>
@@ -76,7 +76,7 @@ export default function Contact() {
                         <label className="block text-sm font-medium text-text-dark">To</label>
                         <input
                             type="text"
-                            value={`${CONTACT_RECIPIENT}, ${CONTACT_CC}`}
+                            value={`${contactRecipient}, ${contactCc}`}
                             readOnly
                             className="mt-2 w-full rounded-3xl border border-mint bg-mint-light px-4 py-3 text-sm text-text-dark outline-none"
                         />

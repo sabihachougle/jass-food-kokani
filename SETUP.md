@@ -178,6 +178,154 @@ Response:
 }
 ```
 
+## Managing Product Images
+
+### Setting up the Images Folder
+
+1. Create a `images` folder in the root of your project (version control with Git):
+
+```bash
+mkdir images
+```
+
+2. Organize images by category:
+
+```
+images/
+├── jass-food/
+│   ├── tandoori-chicken.jpg
+│   ├── frozen-samosas.jpg
+│   ├── shami-kabab.jpg
+│   ├── bread-wheels.jpg
+│   ├── chicken-shahi-roll.jpg
+│   ├── seekh-kabab.jpg
+│   └── croquette.jpg
+└── kokani/
+    ├── duderi.jpg
+    ├── nariyal-pak.jpg
+    ├── sandan.jpg
+    ├── puran-poli.jpg
+    ├── khazoori.jpg
+    ├── pelve.jpg
+    └── ghavne-rava-cake.jpg
+```
+
+3. Add to `.gitignore` if you prefer (images are smaller and manageable):
+
+```bash
+# Add this line if you want to exclude images from git
+# images/
+```
+
+### Updating Product Images
+
+Edit `client/src/data/products.js` and update the `image` field for each product:
+
+**Before (placeholder):**
+```javascript
+{
+  id: 'sandan',
+  name: 'Sandan',
+  description: 'Soft, cardamom-kissed coconut sweet.',
+  price: 120,
+  unit: 'per kg',
+  category: 'kokani',
+  image: 'https://placehold.co/400x300/dfc8a1/6b5a47?text=Sandan',
+}
+```
+
+**After (using local images):**
+```javascript
+{
+  id: 'sandan',
+  name: 'Sandan',
+  description: 'Soft, cardamom-kissed coconut sweet.',
+  price: 120,
+  unit: 'per kg',
+  category: 'kokani',
+  image: '/images/kokani/sandan.jpg',
+}
+```
+
+### Making Images Public in Vite
+
+1. Create a `public` folder in the client directory if it doesn't exist:
+
+```bash
+mkdir client/public
+```
+
+2. Add the images folder to the public directory:
+
+```bash
+# From project root
+cp -r images client/public/
+```
+
+3. Update `vite.config.js` to ensure public assets are served correctly:
+
+```javascript
+export default {
+  server: {
+    middlewareMode: false,
+  },
+  // Vite automatically serves public/ folder assets
+};
+```
+
+### Image Path Convention
+
+**For development and production:**
+- Use relative paths: `/images/kokani/sandan.jpg`
+- Images should be placed in `client/public/images/`
+
+**File naming convention:**
+- Use lowercase names with hyphens: `tandoori-chicken.jpg`
+- Match the product ID where possible
+
+### Image Optimization Tips
+
+1. **Format**: Use JPG for photos, PNG for graphics with transparency
+2. **Size**: Compress images to ~50-100KB each for faster loading
+3. **Dimensions**: 400x300px recommended (aspect ratio 4:3)
+4. **Tools**: Use tools like:
+   - ImageOptim (Mac)
+   - TinyJPG (online)
+   - ImageMagick (command line)
+
+### Batch Update Example
+
+To update all product images at once:
+
+```javascript
+// client/src/data/products.js
+const products = [
+  {
+    id: 'tandoori-chicken',
+    name: 'Tandoori Chicken',
+    description: 'Marinated and roasted, ready-to-heat classic.',
+    price: 420,
+    unit: 'per kg',
+    category: 'jass-food',
+    image: '/images/jass-food/tandoori-chicken.jpg',
+  },
+  // ... update remaining products similarly
+];
+```
+
+### Git Workflow for Images
+
+```bash
+# Add images folder to git
+git add images/
+git commit -m "Add product images for jass-food and kokani categories"
+git push
+
+# Clone with images on another machine
+git clone <repository-url>
+# Images folder will be included automatically
+```
+
 ## Deployment
 
 ### Option 1: Deploy to Vercel (Recommended)
