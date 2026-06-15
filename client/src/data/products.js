@@ -8,6 +8,10 @@ const products = [
     unit: 'per kg',
     category: 'jass-food',
     image: 'https://placehold.co/400x300/f3d0c2/6b3b2a?text=Tandoori+Chicken',
+    images: [
+      'https://placehold.co/600x450/f3d0c2/6b3b2a?text=Tandoori+Chicken+1',
+      'https://placehold.co/600x450/f3d0c2/6b3b2a?text=Tandoori+Chicken+2',
+    ],
   },
 
   {
@@ -74,6 +78,10 @@ const products = [
     unit: 'per kg',
     category: 'kokani',
     image: 'https://placehold.co/400x300/dfc8a1/6b5a47?text=Duderi',
+    images: [
+      'https://placehold.co/600x450/dfc8a1/6b5a47?text=Duderi+1',
+      'https://placehold.co/600x450/dfc8a1/6b5a47?text=Duderi+2',
+    ],
   },
   {
     id: 'nariyal-pak',

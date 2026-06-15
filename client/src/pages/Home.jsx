@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import ProductModal from '../components/ProductModal';
 import products from '../data/products';
 import homeContent from '../content/home.json';
 
@@ -26,7 +27,7 @@ function useRuntimeConfig() {
   return config;
 }
 
-function CarouselSection({ title, items = [], link }) {
+function CarouselSection({ title, items = [], link, onItemClick }) {
   const containerRef = useRef(null);
   const { addItem, showNotification } = useCart();
 
@@ -58,8 +59,12 @@ function CarouselSection({ title, items = [], link }) {
 
       <div ref={containerRef} className="flex min-w-0 gap-2 sm:gap-3 md:gap-4 overflow-x-auto py-2 scrollbar-hide px-0 sm:px-0 md:px-0 w-full">
         {items.map((it, idx) => (
-          <div key={idx} className="carousel-card min-w-[150px] sm:min-w-[160px] md:min-w-[180px] lg:min-w-[220px] max-w-[150px] sm:max-w-[160px] md:max-w-[180px] lg:max-w-[220px] rounded-lg sm:rounded-xl border border-mint bg-white shadow-sm hover:shadow-md transition overflow-hidden flex-shrink-0">
-            <img src={it.image} alt={it.name} className="h-28 sm:h-32 md:h-36 w-full object-cover" />
+          <div
+            key={idx}
+            onClick={() => onItemClick?.(it)}
+            className="carousel-card cursor-pointer min-w-[150px] sm:min-w-[160px] md:min-w-[180px] lg:min-w-[220px] max-w-[150px] sm:max-w-[160px] md:max-w-[180px] lg:max-w-[220px] rounded-lg sm:rounded-xl border border-mint bg-white shadow-sm hover:shadow-md transition overflow-hidden flex-shrink-0"
+          >
+            <img src={it.image} alt={it.name} className="img-carousel object-cover" />
             <div className="p-2 sm:p-2.5">
               <div className="flex items-start justify-between gap-1">
                 <h4 className="text-xs sm:text-sm font-semibold text-text-dark line-clamp-2">{it.name}</h4>
@@ -72,7 +77,10 @@ function CarouselSection({ title, items = [], link }) {
               <div className="mt-3">
                 <button
                   type="button"
-                  onClick={() => handleAddToCart(it)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleAddToCart(it);
+                  }}
                   className="btn-primary w-full text-xs sm:text-sm px-3 py-2"
                 >
                   Add to Cart
@@ -95,6 +103,7 @@ export default function Home() {
     .map((id) => products.find((p) => p.id === id))
     .filter(Boolean);
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const { contactRecipient, contactCc } = useRuntimeConfig();
   const hero = homeContent?.hero || {};
 
@@ -132,14 +141,17 @@ export default function Home() {
           title="🔥 Trending Jass Food Items"
           items={jassItems}
           link="/jass-food"
+          onItemClick={setSelectedProduct}
         />
 
         <CarouselSection
           title="⭐ Jass Kokani Best Sellers"
           items={kokaniItems}
           link="/jass-kokani"
+          onItemClick={setSelectedProduct}
         />
       </div>
+      <ProductModal product={selectedProduct} isOpen={!!selectedProduct} onClose={() => setSelectedProduct(null)} />
 
       <div className="grid gap-3 sm:gap-4 md:gap-6 md:grid-cols-3">
         <article className="card-soft p-3 sm:p-4 md:p-6 transition hover:-translate-y-1 hover:shadow-glow group">

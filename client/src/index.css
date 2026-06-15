@@ -84,6 +84,22 @@ h6 {
   @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary via-primary-light to-primary-dark px-6 py-3 text-sm font-semibold text-white shadow-glow transition duration-300 ease-out hover:from-primary-dark hover:via-primary hover:to-primary-light hover:shadow-lg active:scale-95;
 }
 
+.img-card {
+  @apply h-40 sm:h-48 w-full;
+}
+
+.img-carousel {
+  @apply h-28 sm:h-32 md:h-36 w-full;
+}
+
+.img-modal-main {
+  @apply h-full w-full;
+}
+
+.img-modal-thumb {
+  @apply h-20 w-full rounded-xl;
+}
+
 .btn-secondary {
   @apply inline-flex items-center justify-center rounded-full border border-primary bg-white/95 px-6 py-3 text-sm font-semibold text-primary shadow-sm transition duration-300 ease-out hover:border-accent hover:text-accent hover:bg-mint-light hover:shadow-md active:scale-95;
 }
