@@ -1,0 +1,40 @@
+{
+    "hero": {
+        "eyebrow": "Homemade Mithaas",
+        "subeyebrow": "Authentic Kokani Taste",
+        "heading": "Authentic Kokani Sweets, Made with Love",
+        "paragraphs": [
+            "Jass Food and Kokani Delicacies brings the warm flavors of home to your table with traditional recipes passed down through generations."
+        ],
+        "cta": [
+            {
+                "label": "View Menu",
+                "link": "/menu",
+                "type": "primary"
+            },
+            {
+                "label": "Order Now",
+                "link": "/checkout",
+                "type": "secondary"
+            }
+        ]
+    },
+    "carousels": {
+        "jassFood": [
+            "tandoori-chicken",
+            "frozen-samosas",
+            "shami-kabab",
+            "bread-wheels",
+            "chicken-shahi-roll"
+        ],
+        "kokani": [
+            "duderi",
+            "nariyal-pak",
+            "sandan"
+        ]
+    },
+    "social": {
+        "instagram": "https://www.instagram.com/jassfood/",
+        "facebook": "https://www.facebook.com/jassfood1/"
+    }
+}

@@ -19,8 +19,11 @@ export default function Navbar() {
         <nav className="hidden items-center gap-6 md:flex">
           <Link to="/" className="text-sm text-text-dark transition hover:text-primary">Home</Link>
           <Link to="/menu" className="text-sm text-text-dark transition hover:text-primary">Menu</Link>
+          <Link to="/jass-food" className="text-sm text-text-dark transition hover:text-primary">Jass Food</Link>
+          <Link to="/jass-kokani" className="text-sm text-text-dark transition hover:text-primary">Jass Kokani</Link>
+          <Link to="/testimonials" className="text-sm text-text-dark transition hover:text-primary">Testimonials</Link>
           <Link to="/checkout" className="text-sm text-text-dark transition hover:text-primary">Order Now</Link>
-          <a href="#contact" className="text-sm text-text-dark transition hover:text-primary">Contact</a>
+          <Link to="/contact" className="text-sm text-text-dark transition hover:text-primary">Contact</Link>
         </nav>
 
         <div className="flex items-center gap-3">

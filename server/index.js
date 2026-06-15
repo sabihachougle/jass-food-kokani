@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import orderRouter from './routes/orderRoutes.js';
+import contactRouter from './routes/contactRoutes.js';
 
 
 dotenv.config();
@@ -12,6 +13,7 @@ const port = process.env.PORT || 4000;
 app.use(cors({ origin: true }));
 app.use(express.json());
 app.use('/api/order', orderRouter);
+app.use('/api/contact', contactRouter);
 
 app.get('/', (req, res) => {
   res.send({ status: 'running', service: 'Jass Food and Kokani Delicacies API' });

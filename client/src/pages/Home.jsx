@@ -1,19 +1,80 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import products from '../data/products';
+import homeContent from '../content/home.json';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+const CONTACT_RECIPIENT = 'orders@jassfood.com';
+const CONTACT_CC = 'sabiha53chougle@gmail.com';
+
+function CarouselSection({ title, items = [], link }) {
+  const containerRef = useRef(null);
+
+  const scrollByCard = (direction = 1) => {
+    const container = containerRef.current;
+    if (!container) return;
+    const card = container.querySelector('.carousel-card');
+    const gap = 16;
+    const cardWidth = (card?.offsetWidth || 260) + gap;
+    container.scrollBy({ left: cardWidth * direction, behavior: 'smooth' });
+  };
+
+  return (
+    <section className="card-soft p-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-text-dark">{title}</h3>
+        <div className="flex items-center gap-2">
+          <button onClick={() => scrollByCard(-1)} className="btn-secondary">Prev</button>
+          <button onClick={() => scrollByCard(1)} className="btn-secondary">Next</button>
+          {link && <Link to={link} className="ml-3 text-sm text-primary">View all</Link>}
+        </div>
+      </div>
+
+      <div ref={containerRef} className="mt-4 flex gap-4 overflow-x-auto py-3 scrollbar-hide">
+        {items.map((it, idx) => (
+          <div key={idx} className="carousel-card min-w-[220px] max-w-[220px] rounded-xl border border-mint bg-white shadow-sm">
+            <img src={it.image} alt={it.name} className="h-36 w-full object-cover rounded-t-xl" />
+            <div className="p-3">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-semibold text-text-dark">{it.name}</h4>
+                <span className="text-xs text-text-light">₹{it.price || ''}</span>
+              </div>
+              {it.description && <p className="mt-1 text-xs text-text-light">{it.description}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
+  const jassItems = (homeContent?.carousels?.jassFood || [])
+    .map((id) => products.find((p) => p.id === id))
+    .filter(Boolean);
+
+  const kokaniItems = (homeContent?.carousels?.kokani || [])
+    .map((id) => products.find((p) => p.id === id))
+    .filter(Boolean);
+
+  const hero = homeContent?.hero || {};
+
   return (
     <section className="grid gap-16 py-10 md:py-16">
       <div className="grid gap-10 rounded-[2rem] border border-mint bg-white/95 px-6 py-10 shadow-glow sm:px-10 md:grid-cols-[1.2fr_1fr] md:items-center">
         <div className="max-w-2xl">
-          <p className="text-sm uppercase tracking-[0.35em] text-accent font-semibold">Homemade Mithaas</p>
-          <p className="text-sm uppercase tracking-[0.35em] text-text-light">Authentic Kokani Taste</p>
-          <h1 className="mt-4 text-4xl font-semibold leading-tight text-text-dark sm:text-5xl">Authentic Kokani Sweets, Made with Love</h1>
-          <p className="mt-6 max-w-xl text-base leading-8 text-text-light">
-            Jass Food and Kokani Delicacies brings the warm flavors of home to your table with traditional recipes passed down through generations.
-          </p>
+          <p className="text-sm uppercase tracking-[0.35em] text-accent font-semibold">{hero.eyebrow || 'Homemade Mithaas'}</p>
+          <p className="text-sm uppercase tracking-[0.35em] text-text-light">{hero.subeyebrow || 'Authentic Kokani Taste'}</p>
+          <h1 className="mt-4 text-4xl font-semibold leading-tight text-text-dark sm:text-5xl">{hero.heading || 'Authentic Kokani Sweets, Made with Love'}</h1>
+          <div className="mt-6 max-w-xl text-base leading-8 text-text-light">
+            {(hero.paragraphs || []).map((p, i) => (
+              <p key={i} className={i === 0 ? '' : 'mt-3'}>{p}</p>
+            ))}
+          </div>
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link to="/menu" className="btn-primary">View Menu</Link>
-            <Link to="/checkout" className="btn-secondary">Order Now</Link>
+            {(hero.cta || []).map((c, i) => (
+              <Link key={i} to={c.link} className={c.type === 'primary' ? 'btn-primary' : 'btn-secondary'}>{c.label}</Link>
+            ))}
           </div>
         </div>
         <div className="rounded-[2rem] bg-gradient-to-br from-accent/10 via-mint-light to-white p-8 text-center shadow-inner shadow-glow/30">
@@ -24,6 +85,21 @@ export default function Home() {
             <p>Orders are confirmed automatically and prepared with care.</p>
           </div>
         </div>
+      </div>
+
+      {/* Trending carousels */}
+      <div className="grid gap-8">
+        <CarouselSection
+          title="Trending Jass Food Items"
+          items={jassItems}
+          link="/jass-food"
+        />
+
+        <CarouselSection
+          title="Jass Kokani Delicacies Best Sellers"
+          items={kokaniItems}
+          link="/jass-kokani"
+        />
       </div>
 
       <div className="grid gap-8 md:grid-cols-3">
@@ -54,20 +130,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="card-soft bg-gradient-to-br from-mint-light/80 via-white to-mint-light">
-        <p className="text-sm uppercase tracking-[0.35em] text-text-light">Contact</p>
-        <div className="mt-5 grid gap-5 md:grid-cols-2">
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-text-dark">Jass Food & Kokani Delicacies</h3>
-            <p className="text-sm leading-7 text-text-light">Home-based Kokani sweets business accepting orders online. Fresh, handmade, and lovingly prepared.</p>
-          </div>
-          <div className="space-y-3 text-sm text-text-light">
-            <p><strong>Phone:</strong> +91 98339 87609</p>
-            <p><strong>Email:</strong> orders@jassfood.com</p>
-            <p><strong>Follow:</strong> Instagram / Facebook</p>
-          </div>
-        </div>
-      </section>
+      {/* Contact moved to separate route */}
     </section>
   );
 }
